@@ -1,0 +1,20 @@
+apiVersion: jpe5.prabhatsharma.in/v1
+kind: AdmissionPolicy
+metadata:
+  name: admissionpolicy-sample
+spec:
+  rules:
+  - name: rule1
+    resourceKind: pod
+    validationFailureAction: enforce
+    description: Any pods that have the name simple are really weird and we should prevent them from running. 
+    message: Pod name should not be simple.
+    rule: |
+      function validate(resource){
+        resource = JSON.parse(resource);
+        if(resource.metadata.name != "simple") {
+          return true;
+        };
+        return false;
+      }
+
